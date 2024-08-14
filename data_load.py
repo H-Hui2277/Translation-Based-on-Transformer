@@ -69,18 +69,35 @@ def preprocess_nmt(text):
     return ''.join(out)
 
 def tokenize_nmt(text, num_examples=None):
-    """Tokenize the English-French dataset.
-
+    """
+    Tokenize the English-French dataset.
+    
+    This function tokenizes the English-French dataset for neural machine translation (NMT) tasks. 
+    It splits each language sentence pair into a list of words, preparing for subsequent NMT model training.
+    
+    Parameters:
+    - text: A string containing the English-French sentence pairs, separated by newline characters.
+    - num_examples: The maximum number of sentence pairs to process. If None, process all sentence pairs.
+    
+    Returns:
+    - source: A list of English sentence pairs, where each sentence is represented as a list of words.
+    - target: A list of French sentence pairs, where each sentence is represented as a list of words.
+    
     Defined in :numref:`sec_utils`"""
     source, target = [], []
     for i, line in enumerate(text.split('\n')):
+        # Check if the number of examples to process has reached the limit
         if num_examples and i > num_examples:
             break
         parts = line.split('\t')
+        # Ensure that the line contains a complete English-French sentence pair
         if len(parts) == 2:
+            # Tokenize the English sentence and add it to the source list
             source.append(parts[0].split(' '))
+            # Tokenize the French sentence using jieba and add it to the target list
             target.append(jieba.lcut(parts[1]))
 
+            # Alternatively, tokenize the French sentence using the same method as English
             # target.append(parts[1].split(' '))
     return source, target
 
